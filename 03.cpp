@@ -1,7 +1,7 @@
-/*题目：背包问题
+/*题目：完全背包（一个物品可以取无限次，只要空间够用） 
 书包总体积为8； 
-4个物体分别对应的体积为：2，3，4，5；
-4个物体分别对应的价值为：3，4，5，6； */ 
+4个物体分别对应的体积为：2，3，4，7；
+4个物体分别对应的价值为：1，3，5，9； */ 
 #include<bits/stdc++.h>
 using namespace std;
 int a1[5]={0,2,3,4,7}; //物体体积 
@@ -15,7 +15,7 @@ int main(){
 		}
 	}
 	for(int i=0;i<5;i++){
-		for(int j=0;j<11;j++){
+		for(int j=0;j<11;j++){ 
 			if(a1[i]==j){
 //				cout<<"a1[i]==j "<<i<<" "<<j<<endl; 
 				arr[i][j]=a2[i];
@@ -25,17 +25,14 @@ int main(){
 //				cout<<"a1[i]>j "<<i<<" "<<j<<endl;
 				arr[i][j]=arr[i-1][j];
 			}
-			else if(a1[i]<j){
-				if(arr[i][j-a1[i]]==arr[i-1][j-a1[i]]){
-//					cout<<"a1[i]<j "<<i<<" "<<j<<endl;
-					arr[i][j]=a2[i]+arr[i][j-a1[i]];
-					if(arr[i][j]<arr[i-1][j]) arr[i][j]=arr[i-1][j]; 
-				}
-				else arr[i][j]=arr[i][j-1];
+			else if(a1[i]<j&&i>0){
+//				cout<<"a1[i]<j "<<i<<" "<<j<<endl;
+				arr[i][j]=a2[i]+arr[i][j-a1[i]];
+				if(arr[i][j]<arr[i-1][j]) arr[i][j]=arr[i-1][j]; 
 			}
+			else arr[i][j]=arr[i][j-1];
 		}
 	}
-	
 	for(int i=0;i<5;i++){
 		for(int j=0;j<11;j++){
 			cout<<arr[i][j]<<" ";
