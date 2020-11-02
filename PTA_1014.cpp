@@ -21,11 +21,10 @@ void date1(string s1,string s2)
 		{
 			if(n==0)
 			{
-				if('A'<=s1[i]&&s1[i]<='Z')
+				if('A'<=s1[i]&&s1[i]<='G')
 				{	
 					w=s1[i];
 					n++;
-				}
 				if(w==65)
 				{
 					cout<<"MON"<<" ";
@@ -53,7 +52,8 @@ void date1(string s1,string s2)
 				if(w==71)
 				{
 					cout<<"SUN"<<" ";
-				}	
+				}				
+				}
 			}
 			else
 			{
@@ -66,6 +66,7 @@ void date1(string s1,string s2)
 				if('0'<=s1[i]&&s1[i]<='9')
 				{
 					cout<<'0'<<s1[i]<<":";
+                    break;
 				}
 			}
 		}
