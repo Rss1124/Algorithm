@@ -33,8 +33,9 @@ int main()
 {
 	int num,num1,num2;
 	stringstream ss;
-	string n1,n2;
+	string n1,n2,n;
 	cin>>num;
+	if(num==6174) cout<<"7641 - 1467 = 6174";
 	while(num!=6174)
 	{
 		num1=getmax(num);
@@ -51,13 +52,14 @@ int main()
 		{
 			if(num%100==num)
 			{
-				n1="0"+n1;
+				n1="0"+n1; 
 			}
 			if(num1%10==num1)
 			{
 				n1="0"+n1;
 			}
 			n1="0"+n1;
+//			cout<<n1<<endl; //test
 		}
 		ss.clear();
 		ss<<num2;
@@ -73,16 +75,34 @@ int main()
 				n2="0"+n2;
 			}
 			n2="0"+n2;
+//			cout<<n2<<endl; //test
 		}
 		ss.clear();
 		if(num==6174)
 		{
-			cout<<num1<<" "<<"-"<<" "<<num2<<" "<<" = "<<" "<<num;
+			cout<<num1<<" "<<"-"<<" "<<n2<<" = "<<num;
 		}
 		else
 		{
-			cout<<num1<<" "<<"-"<<" "<<num2<<" "<<" = "<<" "<<num<<endl;	
+			ss<<num;
+			ss>>n;	
+			if(num%1000==num)
+			{
+				if(num%100==num)
+				{
+					n="0"+n;
+				}
+				if(num%10==num)
+				{
+					n="0"+n;
+				}
+				n="0"+n;
+//			cout<<n2<<endl; //test
+			}
+			cout<<num1<<" "<<"-"<<" "<<n2<<" = "<<n<<endl;
+			ss.clear();	
 		}
 	}
+	cout<<endl;
 }
 
