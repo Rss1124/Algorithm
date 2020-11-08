@@ -1,15 +1,19 @@
 #include<bits/stdc++.h>
 using namespace std;
-string str,mstr,Enum;
+string str,mstr,Enum,lstr,rstr;
 stringstream ss;
 char flag;
-int fnum,pnum; 
+int fnum,pnum,flag1=0; 
 
 void get(string str){ //»ñÈ¡EÇ°ÃæµÄ²»º¬·ûºÅµÄ×Ö·û´®mstr,»ñÈ¡Ö¸ÊıºóÃæµÄÊı×Öfnum,»ñÈ¡×óÓÒ·ûºÅflag,»ñÈ¡Ğ¡ÊıµãµÄÎ»ÖÃpnum 
 	int i=1;
 	for(i;str[i]!='E';i++){
-		if(str[i]=='.') pnum=i-1;
-		mstr+=str[i];
+		if(flag1==0&&str[i]!='.') lstr+=str[i];
+		if(str[i]=='.'){
+			i=i+1;
+			flag1=1;
+		}
+		if(flag1==1) rstr+=str[i];
 	}
 	i++;
 	flag=str[i++];
@@ -17,20 +21,42 @@ void get(string str){ //»ñÈ¡EÇ°ÃæµÄ²»º¬·ûºÅµÄ×Ö·û´®mstr,»ñÈ¡Ö¸ÊıºóÃæµÄÊı×Öfnum,»
 		Enum+=str[i];
 	}
 }
-void right(string mstr){ //Èç¹ûEºóÃæµÄÊÇ'+',±íÊ¾Ğ¡ÊıµãÍùÓÒÒÆ
-	int flag=fnum; 
-	for(int i=pnum;i<mstr.length();i++){
-		if(i!=pnum+fnum) str[i]=str[i+1]; //½«Ğ¡ÊıµãºóµÄÊı×ÖÍùÇ°ÒÆ,Ö±µ½µ½´ïĞÂµÄĞ¡ÊıµãµÄÎ»ÖÃpnum+fnum 
-		else if(i==pnum+fnum){
-			mstr[i]='.';
-			if(flag==0) break;
-		}
-		flag--;
+void right(){ //Èç¹ûEºóÃæµÄÊÇ'+',±íÊ¾Ğ¡ÊıµãÍùÓÒÒÆ,±ärstr 
+	if(str[0]=='-') cout<<'-';
+	cout<<lstr; //Ö±½ÓÊä³ölstr 
+	if(fnum<=rstr.length()){
+		for(int i=0;i<rstr.length();i++){
+			if(i==fnum) cout<<'.';
+			cout<<rstr[i];
+		}	 		
 	}
-	if(flag==0) mstr[pnum+fnum]='.';
-	else
+	else if(fnum>rstr.length()){
+		cout<<rstr;
+		fnum=fnum-rstr.length();
+		while(fnum!=0){
+			cout<<0;
+			fnum--;
+		}
+	}
 }
-void left(string mstr){ //Èç¹ûEºóÃæµÄÊÇ'-',±íÊ¾Ğ¡ÊıµãÍù×óÒÆ 
+void left(){ //Èç¹ûEºóÃæµÄÊÇ'-',±íÊ¾Ğ¡ÊıµãÍù×óÒÆ,±älstr 
+	if(str[0]=='-') cout<<'-';
+	if(fnum<lstr.length()){
+		for(int i=0;i<lstr.length();i++){
+			if(i==lstr.length()-fnum) cout<<'.';
+			cout<<lstr[i];
+		}
+	}
+	else if(fnum>=lstr.length()){
+		int num=fnum-lstr.length();
+		cout<<"0.";		
+		while(num!=0){
+			cout<<0;
+			num--;
+		}
+		cout<<lstr;
+	}
+	cout<<rstr;	
 }
 
 int main(){
@@ -39,8 +65,11 @@ int main(){
 	ss<<Enum;
 	ss>>fnum;
 	ss.clear();
-	cout<<"mstr:"<<mstr<<endl;
-	cout<<"flag:"<<flag<<endl;
-	cout<<"fnum:"<<fnum<<endl;
-	cout<<"pnum:"<<pnum;
+//	cout<<"lstr:"<<lstr<<endl;
+//	cout<<"rstr:"<<rstr<<endl;
+//	cout<<"flag:"<<flag<<endl;
+//	cout<<"fnum:"<<fnum<<endl;
+//	cout<<"pnum:"<<pnum;
+	if(flag=='+') right();
+	else left();
 } 
