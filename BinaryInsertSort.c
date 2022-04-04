@@ -17,7 +17,7 @@ void BinaryInsertSort(int a[]){
         low=1;
         high=i-1;
         /**比较，寻找插入的位置**/
-        while(low<=high){
+        while(low<=high){ //折半查找结束的标志: low>high
             mid=(low+high)/2;
             if(a[0]<a[mid]) high=mid-1;
             else low=mid+1;
