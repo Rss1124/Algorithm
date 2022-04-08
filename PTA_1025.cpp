@@ -1,7 +1,7 @@
 #include<iostream>
 #include<iomanip>
 using namespace std;
-#define MAXSIZE 1000005
+#define MAXSIZE 100005
 
 typedef struct Node{
     int index; //在数组中的索引
@@ -11,28 +11,25 @@ typedef struct Node{
 }Node;
 
 void createList(int num,Node array[]);
-int reverseList(Node array[], int k,int index, int &m, int &temp, int &tempBegin, int &end);
+int reverseList(Node array[], int k,int index, int &m, int &tempBegin, int &tempPrev, int &begin, bool &flag);
 void display(Node array[], int begin);
 
 int main(){
-    int begin,num,k,m,temp,tempBegin=-1,end;
+    int begin,num,k,m=1,tempPrev=-2,tempBegin=-2,index;
+    bool flag=false;
     cin>>begin>>num>>k;
     Node *array;
     array = new Node[MAXSIZE]{};
-    temp=k;
+    index=begin;
     createList(num, array);
-    if(k>1){
-        m=num%k;
-        reverseList(array,k,begin,m,temp,tempBegin,end);
+    while(index!=-1&&m!=-1){
+        reverseList(array,k,index,m,tempBegin,tempPrev,begin,flag);
+        if(tempPrev!=-2) array[tempPrev].next=tempBegin; //防止访问到不存在的内存地址,导致段错误
+        index=tempBegin; //index=99999
     }
-    if(k==1||k==0) tempBegin=begin;
-//    cout<<array[0].now<<" "<<array[0].data<<" "<<array[0].next<<endl; //4
-//    cout<<array[33218].now<<" "<<array[33218].data<<" "<<array[33218].next<<endl; //3
-//    cout<<array[12309].now<<" "<<array[12309].data<<" "<<array[12309].next<<endl; //2
-//    cout<<array[100].now<<" "<<array[100].data<<" "<<array[100].next<<endl; //1
-//    cout<<array[99999].now<<" "<<array[99999].data<<" "<<array[99999].next<<endl; //5
-//    cout<<array[68237].now<<" "<<array[68237].data<<" "<<array[68237].next<<endl; //6
-    display(array,tempBegin);
+    if(tempPrev!=-2) array[tempPrev].next=index; //防止访问到不存在的内存地址,导致段错误
+    display(array,begin);
+    return 0;
 }
 
 void createList(int num,Node array[]){
@@ -58,30 +55,27 @@ void display(Node array[], int begin){
     }
 }
 
-int reverseList(Node array[], int k,int index, int &m, int &temp, int &tempBegin,int &end){
-    if(array[index].next==-1) return index;
-    else{
-        int next = reverseList(array, k, array[index].next,m,temp,tempBegin,end);
-        if(next==-2) return index;
-        if(m>0){
-            if(m==1) tempBegin=next;
-            m--;
-            return index;
+int reverseList(Node array[], int k,int index, int &m, int &tempBegin, int &tempPrev, int &begin, bool &flag){
+    if(array[index].next==-1&&m<k){
+        m=-1;
+        return index;
+    }
+    if(m==k){
+        if(tempPrev!=-2) array[tempPrev].next=index; //防止访问到不存在的内存地址,导致段错误
+        tempBegin=array[index].next; //-1
+        if(flag==false){
+            begin=index;
+            flag=true;
         }
-        if(temp==k){
-            end=array[index].next;
-            temp--;
-        }
-        temp--;
-        array[next].next=index; //逆转
-//        cout<<array[next].data<<" "<<array[next].next<<endl;
-        if(temp==0){
-            array[index].next=tempBegin;
-//            cout<<array[index].data<<" "<<array[index].next<<endl;
-            tempBegin=end;
-            temp=k;
-            return -2;
-        }
+        return index;
+    }
+    if(array[index].next!=-1&&m<k){
+        m++;
+        reverseList(array, k, array[index].next, m, tempBegin, tempPrev, begin, flag);
+        if(m==-1)return index;
+        array[array[index].next].next=index;
+        m--;
+        if(m==1) tempPrev=index; //tempPrev=1
         return index;
     }
 }
