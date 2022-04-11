@@ -19,10 +19,10 @@ typedef struct Block{
 void createList(int num,Node array[]);
 void createBlock(Node array[], int begin, Block arrayBlock[], int &length, int k);
 void display(Node array[], int begin, Block arrayBlock[], int blockNum);
-void reservesBlock(Block arrayBlock[],int blockNum, Node array[]);
+void reservesBlock(Block arrayBlock[],int blockNum, Node array[], int &blockLength);
 
 int main(){
-    int begin,num,k,listBegin,length=0,blockBegin;
+    int begin,num,k,length=0,blockBegin,blockLength=0;
     cin>>begin>>num>>k;
     float blockNum= (float)num/(float)k;
     blockNum= ceil(blockNum);
@@ -35,13 +35,14 @@ int main(){
     arrayBlock[int(blockNum)].begin=-1;
     arrayBlock[int(blockNum)].end=-1;
     arrayBlock[int(blockNum)].next=-1;
-//    display(array, listBegin,arrayBlock,blockNum);
-    reservesBlock(arrayBlock, blockNum,array);
-    blockBegin=arrayBlock[(int)blockNum-1].begin;
+    reservesBlock(arrayBlock, blockNum,array,blockLength);
+
+    blockBegin=arrayBlock[blockLength-1].begin;
     display(array,blockBegin,arrayBlock,blockNum);
     return 0;
 }
 
+/** 创建链表 **/
 void createList(int num,Node array[]){
     for(int i=0;i<num;i++){
         Node node;
@@ -54,6 +55,7 @@ void createList(int num,Node array[]){
     }
 }
 
+/** 顺序遍历链表,创建区块 **/
 void createBlock(Node array[], int begin, Block arrayBlock[], int &length, int k){
     int index=begin,start,end,next,temp=1;
     while(index!=-1){
@@ -87,9 +89,15 @@ void display(Node array[], int begin, Block arrayBlock[], int blockNum){
 //    for(int i=0;i<blockNum+1;i++) cout<<arrayBlock[i].begin<<" "<<arrayBlock[i].end<<" "<<arrayBlock[i].next<<endl;
 }
 
-void reservesBlock(Block arrayBlock[],int blockNum, Node array[]){
+/**
+ * 反转区块
+ * 可能有结点不在链表中,所以要重新计算区块长度
+ * **/
+void reservesBlock(Block arrayBlock[],int blockNum, Node array[], int &blockLength){
     for(int i=blockNum-1;i>=0;i--){
+        if(arrayBlock[i].end==0 && arrayBlock[i].next==0 && arrayBlock[i].begin==0) continue;
         array[arrayBlock[i].end].next=arrayBlock[i-1].begin;
+        blockLength++;
         if(i==0) array[arrayBlock[i].end].next=-1;
     }
 }
